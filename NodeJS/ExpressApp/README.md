@@ -15,9 +15,13 @@
 - Create a .env file with the following:
 
   > PORT=_port number_
+
   > SERVER*ADDRESS=http://localhost || \_your custom ip/domain*
+
   > REDIS*PORT=\_port number*
+
   > REDIS*ADDRESS=\_ip of redis server*
+
   > API*ROUTE=\_your api which you want to access* || https://api.hatchways.io/assessment/blog/posts
 
 - After a .env file is created run:
