@@ -15,7 +15,7 @@
 ### Django
 
 - **Todo Application**
-  - standard Todo list which allows for CRUD operations
+  - Users can preform CRUD operations on a todo list
   - Frontend built with React
   - Redux for state management
   - PostgreSQL for data layer
@@ -30,7 +30,7 @@
 ### Spring Boot
 
 - **Pet Clinic**
-  - [based off this repo](https://github.com/spring-projects/spring-petclinic.git)
+  - [Based off this repo](https://github.com/spring-projects/spring-petclinic.git)
   - Business logic is handled differently from tutorial, not a copy-paste type project
   - Uses SQL & H2 for data layer
   - Spring Data JPA for Entities
