@@ -4,7 +4,7 @@
 
 ### Node
 
-- SERENE a Hotel Booking API
+- **SERENE** a Hotel Booking API
   - Provides CRUD operations for users
   - Frontend built with Angular
   - MongoDB for data layer
@@ -14,7 +14,7 @@
 
 ### Django
 
-- Todo Application
+- **Todo Application**
   - standard Todo list which allows for CRUD operations
   - Frontend built with React
   - Redux for state management
@@ -22,14 +22,14 @@
 
 ### .NET
 
-- Clothing Catalog Application
+- **Clothing Catalog Application**
   - Fully dockerized application
   - Interacts with a seperate MongoDB container for data layer
   - Proivdes full CRUD operations for users
 
 ### Spring Boot
 
-- Pet Clinic
+- **Pet Clinic**
   - [based off this repo](https://github.com/spring-projects/spring-petclinic.git)
   - Business logic is handled differently from tutorial, not a copy-paste type project
   - Uses SQL & H2 for data layer
