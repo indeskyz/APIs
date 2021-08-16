@@ -14,13 +14,13 @@
 
 - Create a .env file with the following:
 
-  > **PORT**=port number
+  > **PORT**=port number || 9005
 
   > **SERVER_ADDRESS**= _http://localhost || your custom ip/domain_
 
-  > **REDIS_PORT**=_port number_
+  > **REDIS_PORT**=_port number_ || 9095
 
-  > **REDIS_ADDRESS**=_ip of redis server_
+  > **REDIS_ADDRESS**=_ip of redis server_ || 10.35.212.110
 
   > **API_ROUTE**=_your api which you want to access_ || https://api.hatchways.io/assessment/blog/posts
 
