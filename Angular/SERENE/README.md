@@ -1,4 +1,4 @@
-## Assignment 02 Features & Things to Note
+## Features & Things to Note
 
 ### In Order for the the application to actually run, a .env file **must** be created with the following fields & values
 
