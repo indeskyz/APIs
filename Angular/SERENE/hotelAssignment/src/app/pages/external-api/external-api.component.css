@@ -1,0 +1,78 @@
+body {
+  height: 65vh;
+}
+
+h1 {
+  position: relative;
+  top: 1rem;
+}
+
+h1,
+p {
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  font-size: 4rem;
+}
+
+p {
+  position: relative;
+  font-size: 3.5rem;
+  padding-bottom: 1rem;
+  text-align: center;
+  top: 4.2rem;
+}
+
+p:nth-child(3) {
+  top: 6.5rem;
+}
+
+p:nth-child(4) {
+  top: 9.5rem;
+}
+button {
+  border-radius: 10px;
+  background-color: #011627;
+  border-color: transparent;
+  color: #96ede2;
+  height: 6rem;
+  width: 15rem;
+  transition: 1s all ease;
+  font-size: 1.5rem;
+}
+
+button:hover {
+  box-shadow: #b97375 250px 0 0 2px inset;
+}
+
+.btn {
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+  position: relative;
+  top: 18rem;
+}
+
+.btn-2 {
+  margin-left: 2rem;
+}
+
+.response,
+.result-label {
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  font-size: 2rem;
+}
+
+.response {
+  position: relative;
+  top: 25.9rem;
+}
+
+.result-label {
+  position: relative;
+  top: 0.3rem;
+  right: 1rem;
+  font-size: 2.5rem;
+}

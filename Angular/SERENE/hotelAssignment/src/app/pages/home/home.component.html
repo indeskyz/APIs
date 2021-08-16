@@ -1,0 +1,85 @@
+<app-home *ngIf="(auth.isAuthenticated$ | async) === false"></app-home>
+
+<body class="main-bg" *ngIf="auth.isAuthenticated$ | async">
+    <h1 *ngIf="auth.user$ | async as user">Welcome Back, {{user?.name}}</h1>
+
+    <div class="container">
+        <div class="btn-1">
+            <button routerLink="/booking-page" class="nav-link" routerLinkActive="router-link-exact-active">
+                Create a Booking
+            </button>
+        </div>
+        <div class="btn-2">
+            <button  routerLink="/view-bookings-page" class="nav-link" routerLinkActive="router-link-exact-active">
+                View All Bookings
+            </button>
+        </div>
+        <div class="btn-3">
+            <button  routerLink="/search-hotels-by-name-page" class="nav-link" routerLinkActive="router-link-exact-active">
+                Search Hotels By Name
+            </button>
+        </div>
+
+        <div class="btn btn-4">
+            <button  routerLink="/search-hotels-by-city-page" class="nav-link" routerLinkActive="router-link-exact-active">
+                Search Hotels By City
+            </button>
+        </div>
+    <div class=" btn btn-5">
+        <button class="refresh" (click)="refresh()">Update Listings</button>
+    </div>
+    </div>
+
+
+    <div *ngIf="hotelList" class="hotel-container">
+
+    <mat-grid-list cols="7" rowHeight="7:1">
+        <mat-grid-tile>
+            <b>Name</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>ID</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Street</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Postal Code</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Price per day</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Contact Email</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Associated User ID</b>
+        </mat-grid-tile>
+        <ng-container *ngFor="let hotel of hotelList">
+            <mat-grid-tile>
+                <b> {{ hotel.hotel_name}} </b>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.hotel_id}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.street}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.postal_code}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+               $ {{ hotel.price}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.email}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.user_id}}
+            </mat-grid-tile>
+        </ng-container>
+    </mat-grid-list>
+    </div>
+
+
+</body>

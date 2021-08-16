@@ -1,0 +1,67 @@
+<body class="main-bg">
+<h3>Find Hotels by City Name</h3>
+
+<form class="form-container">
+    <div class="item-1">
+        <label for="hotelCity" class="sr-only">City Name </label>
+        <input [(ngModel)]="city" type="string" maxlength="50" class="form-control" name="hotelCity" placeholder="Enter City Name" required />
+    </div>
+   <br/>
+
+</form>
+    <div class="btn">
+        <button (click)="getHotelByCity()" type="submit">
+            Find
+        </button>
+    </div>
+
+
+    <div class="dataResults" [hidden]="queryResults">{{results}}</div>
+
+
+
+
+<div *ngIf="hotelByCityList" class="hotel-container" [hidden]="hotelDetails">
+
+    <mat-grid-list cols="6" rowHeight="6:1">
+        <mat-grid-tile>
+            <b>Name</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>ID</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Street</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Postal Code</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Price per day</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Contact Email</b>
+        </mat-grid-tile>
+        <ng-container *ngFor="let hotel of hotelByCityList">
+            <mat-grid-tile>
+                {{ hotel.hotel_name}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.hotel_id}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.street}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.postal_code}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+               $ {{ hotel.price}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.email}}
+            </mat-grid-tile>
+        </ng-container>
+    </mat-grid-list>
+</div>
+</body>

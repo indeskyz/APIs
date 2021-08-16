@@ -1,0 +1,25 @@
+<body class=main-bg>
+
+
+<div class="container" *ngIf="auth.user$ | async as user">
+  <div class="">
+    <div class="item-1">
+      <img
+        [src]="user?.picture"
+        alt="User's profile picture"
+        class="rounded-circle img-fluid profile-picture"
+      />
+    </div>
+    <div class="item-2">
+      <h2>{{ user?.name }}</h2>
+      <p class="lead text-muted">{{ user?.email }}</p>
+    </div>
+  </div>
+
+  <div class="item-3" *ngIf="profileJson">
+    <pre>{{ profileJson }}</pre>
+  </div>
+</div>
+
+
+</body>

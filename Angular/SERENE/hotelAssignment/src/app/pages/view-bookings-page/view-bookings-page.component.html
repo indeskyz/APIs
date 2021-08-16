@@ -1,0 +1,45 @@
+<body class="main-bg">
+
+    <div *ngIf="bookingsList" class="booking-container">
+    
+    <mat-grid-list cols="5" rowHeight="5:1">
+        <mat-grid-tile>
+            <b>ID</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Inital Booking Date</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Start of Booking</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>End of Booking</b>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <b>Associated User ID</b>
+        </mat-grid-tile>
+        <ng-container *ngFor="let hotel of bookingsList">
+            <mat-grid-tile>
+                {{ hotel.hotel_id}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.booking_date}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.booking_start}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.booking_end}}
+            </mat-grid-tile>
+            <mat-grid-tile>
+                {{ hotel.user_id}}
+            </mat-grid-tile>
+        </ng-container>
+    </mat-grid-list>
+
+
+    </div>
+
+</body>
+
+
