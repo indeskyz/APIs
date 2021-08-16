@@ -1,10 +1,14 @@
 ## Built Using Django and React
 
 - uses Redux for state management & PostgreSQL as the main database
+- you need psycog2 and an instance of PostgreSQL in order to start the Django Server
+  - PostgreSQL credentials can be found in the //crud_project//crud_project// directory if you wish to configure them for your personal instance
 
 ### To Run
 
-**First start the Django Server**
+**Install and Configure PostgreSQL on your machine then run pip3 install psycog2**
+
+**Start the Django Server**
 
 > python manage.py runserver 8080
 
