@@ -1,0 +1,68 @@
+
+.title-bar{
+        --padding-top: 15px;
+}
+
+a{
+        color: black;
+        padding-left: 20px;
+        display: inline;
+        margin-left: -25px;
+        margin-top: 20px;
+}
+#new-place{
+        color: black;
+        padding-left: 20px;
+        display: inline;
+        margin-left: -15px;
+        margin-top: 5px;
+}
+
+.grid{
+        
+        display: grid;
+        position: absolute;
+        margin-left: 26vw;
+        top: 70vh;
+}
+
+
+.container{
+    position: relative;
+    padding-left: 15px;
+    padding-top: 35px;
+}
+
+.bttn {
+    position: relative;
+    margin-left: 5px;
+    height: 100px;
+    
+}
+
+.edit-bttn{
+        position: relative;
+        left: 10px;
+        bottom: 32px;
+}
+
+.delete-bttn{
+        position: relative;
+        left: 22px;
+        bottom: 32px;
+}
+
+.places-bttn  {
+ --padding-bottom: 40px;
+ --padding-end: 35px;
+ --padding-start: 45px;
+ --padding-top: 20px;
+}
+
+.edit-bttn, .delete-bttn {
+--padding-bottom: 20px;
+--padding-end: 25px;
+--padding-start: 28px;
+--padding-top: 20px;
+}
+

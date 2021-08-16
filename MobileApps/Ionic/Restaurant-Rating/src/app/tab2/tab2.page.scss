@@ -1,0 +1,42 @@
+ion-header{
+        display:none;
+}
+
+#map_canvas{
+        height: 100vh;
+        width: 100vw;
+}
+
+
+.container{
+        display: flex;
+        align-items: center;
+        align-content: center;
+        height: 30px;
+
+}
+
+.input{
+        background-color: black;
+        position: relative;
+        top: 0.01em;
+        border-radius: 0.2em;
+        font-size: var(--label-font);
+}
+
+.button{
+        
+    position: absolute;
+    left: 78vw;
+    top: 0em;
+    z-index: 100;
+    
+}
+
+.search-icon{
+        position: relative;
+        left:0.12em;
+}
+
+
+
