@@ -10,19 +10,19 @@
 
 ### To Run
 
-> npm install
+> **npm install**
 
 - Create a .env file with the following:
 
-  > PORT=_port number_
+  > **PORT**=port number
 
-  > SERVER*ADDRESS=http://localhost || \_your custom ip/domain*
+  > **SERVER_ADDRESS**= _http://localhost || your custom ip/domain_
 
-  > REDIS*PORT=\_port number*
+  > **REDIS_PORT**=_port number_
 
-  > REDIS*ADDRESS=\_ip of redis server*
+  > **REDIS_ADDRESS**=_ip of redis server_
 
-  > API*ROUTE=\_your api which you want to access* || https://api.hatchways.io/assessment/blog/posts
+  > **API_ROUTE**=_your api which you want to access_ || https://api.hatchways.io/assessment/blog/posts
 
 - After a .env file is created run:
-  > npm start
+  > **npm start**
