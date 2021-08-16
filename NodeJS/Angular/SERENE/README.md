@@ -42,6 +42,8 @@
 
 - A secondary, albeit small, API has also been provided that uses JWT for authenticating requests
 
+#### Note, Error Messages should never contain sensitive information, theyve only been included now because I wanted to ensure that you could actualyl start the application
+
 #### Demo Link
 
 [Youtube](https://youtu.be/A1X-DrUTJQc)
