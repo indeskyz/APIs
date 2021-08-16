@@ -17,8 +17,8 @@
 
 - Next run to create the image:
 
-  > docker run -d --rm --name mongo -p 27017:27017 -v mongodbdata:/data/db -e MONGO\*INITDB_ROOT_USERNAME=hazel -e MONGO_INITDB_ROOT_PASSWORD=<mongoDBPassword> mongo
+> docker run -d --rm --name mongo -p 27017:27017 -v mongodbdata:/data/db -e MONGO\*INITDB_ROOT_USERNAME=hazel -e MONGO_INITDB_ROOT_PASSWORD=\<mongoDBPassword\> mongo
 
 - Now you can start the application by running:
 
-  > docker run -it --rm -p 8080:80 -e MongoDbSettings:Host=mongo -e MongoDbSettings=<mongoDBPassword> catalog:v1
+  > docker run -it --rm -p 8080:80 -e MongoDbSettings:Host=mongo -e MongoDbSettings=\<mongoDBPassword\> catalog:v1
