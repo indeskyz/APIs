@@ -3,7 +3,6 @@ const PORT = process.env.PORT;
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 const express = require("express");
 const blogPostsRouter = require("./routes/blogPostsRouter");
-
 const app = express();
 
 const currTime = new Date().toLocaleString();
