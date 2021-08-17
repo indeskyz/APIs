@@ -12,16 +12,18 @@
 - After getting your API key navigate to _android/app/src/main/AndroidManifest.xml_:
 
   - Add this code block to your AndroidManifest.xml
-    `<application>
-      <!-- You will only need to add this meta-data tag, but make sure it's a child of application -->
 
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="Your Google maps API Key Here"/>
+```xml
+<application>
+   <!-- You will only need to add this meta-data tag, but make sure it's a child of application -->
+   <meta-data
+     android:name="com.google.android.geo.API_KEY"
+     android:value="Your Google maps API Key Here"/>
 
-       <!-- You will also only need to add this uses-library tag -->
-       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-    </application>`
+   <!-- You will also only need to add this uses-library tag -->
+   <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+</application>
+```
 
 - See the following based on your platform and if you are using Capictor or Cordova [Ionic Docs](https://ionicframework.com/docs/developing/android)
 
