@@ -5,11 +5,14 @@
 ### Node
 
 - **SERENE** a Hotel Booking API
+
   - Provides CRUD operations for users
   - Frontend built with Angular
   - MongoDB for data layer
   - GraphQL for API queries
+
 - **ExpressApp** an app designed for testing Redis caching & making concurrent calls to an external API
+
   - External API has restrictions on query parameters and this app ensures those restrictions are followed
 
 ### Django
