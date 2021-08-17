@@ -42,7 +42,7 @@
 
 - A secondary, albeit small, API has also been provided that uses JWT for authenticating requests
 
-#### Note, error messages should never contain sensitive information, they've only been included because the credentials have now expired and are no longer a vulenerability
+#### Note, error messages should never contain sensitive information, they've only been included because the credentials have now expired and are no longer a vulnerability
 
 #### Demo Link
 
