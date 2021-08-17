@@ -1,4 +1,4 @@
-const redis_client = require("../redisClient");
+const redis_client = require("../../redisClient");
 
 //uses /api/posts?tags=[value] as cache key
 const checkRedisCache = (req, res, next) => {

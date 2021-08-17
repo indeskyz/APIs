@@ -3,7 +3,7 @@ const should = require("chai").should();
 const expect = require("chai").expect;
 const chaiHttp = require("chai-http");
 const mockData = require("./mockData");
-const routes = require("../routes/blogPostsRouter");
+const routes = require("../routes/routeHandler");
 
 chai.use(chaiHttp);
 

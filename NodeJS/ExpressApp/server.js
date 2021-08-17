@@ -2,14 +2,14 @@ require("dotenv").config();
 const PORT = process.env.PORT;
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 const express = require("express");
-const blogPostsRouter = require("./routes/blogPostsRouter");
+const routeHandler = require("./routes/routeHandler");
 const app = express();
 
 const currTime = new Date().toLocaleString();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(blogPostsRouter);
+app.use(routeHandler);
 
 app.listen(PORT, () => {
   console.log(
