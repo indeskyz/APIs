@@ -1,7 +1,7 @@
 const createErrorMessage = require("../userServices/errorMessages");
 
 const invalidQueryParam = (res, queryParam) => {
-  res.status(400).json(createErrorMessage(`${queryParam} is invalid`));
+  res.status(400).json(createErrorMessage(`${queryParam}`, "is invalid"));
   return;
 };
 

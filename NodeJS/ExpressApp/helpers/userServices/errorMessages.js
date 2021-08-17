@@ -1,6 +1,6 @@
-const createErrorMessage = (message = "invlaid parameter") => {
+const createErrorMessage = (invalidParam, message = "invalid parameter") => {
   let errorMSG = {
-    error: `${message}`,
+    error: `${invalidParam} ${message}`,
   };
   return errorMSG;
 };
