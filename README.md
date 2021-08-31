@@ -38,3 +38,9 @@
   - Uses SQL & H2 for data layer
   - Spring Data JPA for Entities
   - Frontend built with Thymeleaf
+
+### IOS with Swift
+
+- **Todo Application**
+  - There is 2 different Todo Lists, one uses Core Data and another interacts with a Node/Express API
+  - Application was built programmatically
