@@ -39,8 +39,8 @@
   - Spring Data JPA for Entities
   - Frontend built with Thymeleaf
 
-### IOS with Swift
+### iOS with Swift
 
 - **Todo Application**
-  - There is 2 different Todo Lists, one uses Core Data and another interacts with a Node/Express API
+  - There is 2 different Todo Lists, one uses Core Data and another interacts with a Node/Express API that uses MongoDB for the data layer
   - Application was built programmatically
