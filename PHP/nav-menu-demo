@@ -1,0 +1,177 @@
+<?php
+ 
+
+function wpse_load_plugin_css() {
+    $plugin_url = plugin_dir_url( __FILE__ );
+
+    wp_enqueue_style( 'nav-menu-styles', $plugin_url . 'nav-menu-styles.css' );
+    wp_enqueue_style( 'nav-menu-styles-mobile', $plugin_url . 'nav-menu-styles-mobile.css' );
+}
+add_action( 'wp_enqueue_scripts', 'wpse_load_plugin_css' );
+
+function wpse_load_plugin_scripts() {
+    $plugin_url = plugin_dir_url( __FILE__ );
+
+    wp_enqueue_script( 'nav-js-file', $plugin_url . 'nav-menu-scripts.js');
+}
+add_action( 'wp_enqueue_scripts', 'wpse_load_plugin_scripts' );
+
+
+function create_nav_menu() {
+    
+    $locations = get_nav_menu_locations();
+    $menu_id = $locations["primary"];
+    $menu_object = wp_get_nav_menu_object($menu_id);
+    $menu_slug = $menu_object->slug;
+
+    
+    $array_menu = get_nav_menu_array($menu_slug);
+    print_r(esc_url( wp_get_attachment_url( get_theme_mod( 'custom_logo' ) ) ));
+
+    #Dynamically build menu HTML (capped at 3 tiers) DESKTOP
+    echo '<div id="custom-navigation" class="custom-navigation desktop">
+    <img class="nav-header-logo" src="/wp-content/uploads/2021/03/Logo-1-translucent-1.png"></img>
+    <ul>';
+    foreach ($array_menu as $top_item)
+    {
+        echo '<div>';
+        echo '<p class="top-item '. str_replace("»", "", strtolower(str_replace(" ", "", $top_item["title"]))) .'"><a href="' . $top_item["url"] . '">' . $top_item["title"] . '</a></p>';
+
+        if ( (!empty($top_item["children"]))
+         && ((is_user_logged_in() == true) || (str_replace("»", "", strtolower(str_replace(" ", "", $top_item["title"]))) != "myprofile")) ){
+            echo '<ul class="mega-sub-menu">';
+
+            foreach ($top_item["children"] as $child_item){
+                echo '<li class="child-item '. str_replace("»", "", strtolower(str_replace(" ", "", $child_item["title"]))) .'"><a href="' . $child_item["url"] . '">' . $child_item["title"];
+                if (!empty($child_item["children"])){
+                    echo '<ul class="grandchild-menu">';
+
+                    foreach ($child_item["children"] as $grandchild_item){
+                        echo '<li class="grandchild-item"><a href="' . $grandchild_item["url"] . '">' . $grandchild_item["title"] . '</a></li>';
+                    }
+                    echo '</ul>';
+                }
+                echo '</a></li>';
+            }
+
+            echo '</ul>';
+        }
+
+        // echo '</a>';
+        echo '</div>';
+    }
+    echo '</ul></div>';
+
+    #Dynamically build menu HTML (capped at 3 tiers) MOBILE
+    echo '<div id="custom-navigation" class="custom-navigation mobile">
+        <div class="header-logo-container">
+            <div class="logo-mobile-container">
+                <img class="nav-header-logo" src="/wp-content/uploads/2021/03/Logo-1-translucent-1.png"></img>
+            </div>
+            <div class="nav-menu-icon"><i class="hamburger-menu-icon"></i></div>
+        </div>
+    <div class="nav-container">
+        <div class="header-logo-container">
+            <div class="logo-mobile-container">
+                <img class="nav-header-logo" src="/wp-content/uploads/2021/03/Logo-1-translucent-1.png"></img>
+            </div>
+            <div class="nav-header-close-button"></div>
+        </div>
+    <ul>';
+    foreach ($array_menu as $top_item)
+    {
+        echo '<div class="top-item-container ' . strtolower(str_replace(" ", "", $top_item["title"])) . '">';
+
+        if ( strtolower(str_replace(" ", "", $top_item["title"])) === 'video'){
+            echo '<p class="top-item '. str_replace("»", "", strtolower(str_replace(" ", "", $top_item["title"]))) .'">
+                    <a href="' . $top_item["url"] . '">' . $top_item["title"] . '</a>
+                </p>';
+        } else {
+            echo '<p class="top-item '. str_replace("»", "", strtolower(str_replace(" ", "", $top_item["title"]))) .'">
+                    <span href="' . $top_item["url"] . '">' . $top_item["title"] . '</span>
+                </p>';
+        }
+
+        if (!empty($top_item["children"])){
+            echo '<ul class="mega-sub-menu">
+                    <div class="back-arrow-container">
+                        <div class="back-arrow-button"></div>
+                        <p>Back</p>
+                    </div>
+                    <p class="menga-sub-title">' . strtolower(str_replace(" ", "", $top_item["title"])) . '
+            ';
+
+            foreach ($top_item["children"] as $child_item){
+                echo '<li class="child-item '. str_replace("»", "", strtolower(str_replace(" ", "", $child_item["title"]))) .'"><a href="' . $child_item["url"] . '">' . $child_item["title"];
+                if (!empty($child_item["children"])){
+                    echo '<ul class="grandchild-menu">';
+
+                    foreach ($child_item["children"] as $grandchild_item){
+                        echo '<li class="grandchild-item"><a href="' . $grandchild_item["url"] . '">' . $grandchild_item["title"] . '</a></li>';
+                    }
+                    echo '</ul>';
+                }
+                echo '</a></li>';
+            }
+
+            echo '</ul>';
+        }
+
+        // echo '</a>';
+        echo '</div>';
+    }
+    echo '</ul></div></div>';
+
+}
+
+// Builds the menu array
+function get_nav_menu_array($menu_id) {
+
+    $array_menu = wp_get_nav_menu_items($menu_id);
+    $menu_items = array();
+
+    // Create top level array
+    foreach ($array_menu as $m) {
+        if (empty($m->menu_item_parent)) {
+            $menu_items[$m->ID] = array();
+            $menu_items[$m->ID]['ID']           =   $m->ID;
+            $menu_items[$m->ID]['title']        =   $m->title;
+            $menu_items[$m->ID]['url']          =   $m->url;
+            $menu_items[$m->ID]['children']     =   array();
+        }
+    }
+    // Create 2nd level array
+    $submenu_items = array();
+    foreach ($array_menu as $m) {
+        if ($m->menu_item_parent && array_key_exists($m->menu_item_parent, $menu_items)) {
+            $submenu_items[$m->ID] = array();
+            $submenu_items[$m->ID]['ID']        =   $m->ID;
+            $submenu_items[$m->ID]['title']     =   $m->title;
+            $submenu_items[$m->ID]['url']       =   $m->url;
+            $submenu_items[$m->ID]['children']  =   array();
+        }
+    }
+    // Create 3rd level array by checking if parent is in 2nd level array and add to 2nd level children field
+    $subsubmenu_items = array();
+    foreach ($array_menu as $m) {
+        if ($m->menu_item_parent && !array_key_exists($m->menu_item_parent, $menu_items)) {
+            $subsubmenu_items[$m->ID] = array();
+            $subsubmenu_items[$m->ID]['ID']     =   $m->ID;
+            $subsubmenu_items[$m->ID]['title']  =   $m->title;
+            $subsubmenu_items[$m->ID]['url']    =   $m->url;
+            
+            $submenu_items[$m->menu_item_parent]['children'][$m->ID] = $subsubmenu_items[$m->ID];
+        }
+    }
+    // Add 2nd level array (with third level already added) to top level array children field
+    foreach ($array_menu as $m) {
+        if ($m->menu_item_parent && array_key_exists($m->menu_item_parent, $menu_items)) {
+            $menu_items[$m->menu_item_parent]['children'][$m->ID] = $submenu_items[$m->ID];
+        }
+    }
+    return $menu_items;
+}
+
+add_action('wp_head', 'create_nav_menu');
+?>
+
