@@ -1,0 +1,276 @@
+<?php
+
+function edit_profile_load_plugin_css()
+{
+  $plugin_url = plugin_dir_url(__FILE__);
+
+  wp_enqueue_style('edit_profile_style', $plugin_url . 'edit-profile.css');
+}
+add_action('wp_enqueue_scripts', 'edit_profile_load_plugin_css');
+
+function edit_profile_load_plugin_scripts()
+{
+  $plugin_url = plugin_dir_url(__FILE__);
+
+  wp_enqueue_script('edit_profile_js_script', $plugin_url . 'edit-profile.js');
+}
+add_action('wp_enqueue_scripts', 'edit_profile_load_plugin_scripts');
+
+function profile_info_shortcode()
+{
+  $userId = get_current_user_id();
+  $firstname = get_user_meta($userId, 'first_name', true);
+  $lastname = get_user_meta($userId, 'last_name', true);
+  $fullname = $firstname . " " . $lastname;
+  $successMsg = '';
+
+  $user_billing_country = WC()->customer->get_billing_country();
+  $user_billing_state = WC()->customer->get_billing_state();
+  
+  $user_shipping_country = WC()->customer->get_shipping_country();
+  $user_shipping_state = WC()->customer->get_shipping_state();
+
+
+  if (isset($_POST['submit-form']) || isset($_POST['form-submit'])) {
+    $formData = [
+      'fullname'            => htmlspecialchars(sanitize_text_field($_POST["fullname"])),
+      'cell_Phone'          => strval(htmlspecialchars(sanitize_text_field($_POST['cell_phone']))),
+
+      'billing_address'     => htmlspecialchars(sanitize_text_field($_POST['billing_address'])),
+      'billing_city'        => htmlspecialchars(sanitize_text_field($_POST['billing_city'])),
+      'billing_postalcode'  => htmlspecialchars(sanitize_text_field($_POST['billing_postalcode'])),
+      'billing_country'     => ($_POST['billing_country']),
+      'billing_state'       => ($_POST['billing_state']),
+
+      'shipping_address'    => htmlspecialchars(sanitize_text_field($_POST['shipping_address'])),
+      'shipping_city'       => htmlspecialchars(sanitize_text_field($_POST['shipping_city'])),
+      'shipping_postalcode' => htmlspecialchars(sanitize_text_field($_POST['shipping_postalcode'])),
+      'billing_country'     => ($_POST['shipping_country']),
+      'shipping_state'      => ($_POST['shipping_state'])
+    ];
+    update_user_address_info_in_woo_commerce();
+    send_formData_to_rulesAPI($formData);
+    $successMsg = 'Profile Successfully Updated!';
+  }
+?>
+  <form id="profile_info_form" action="" method="POST" enctype="multipart/form-data">
+    <div>
+      <h2 id="first-header" class="profile-headers">Personal Information</h2>
+      <label class="submit-lbl">
+        <input class="save-profile-button" type="submit" id="save-exit" name="submit-form"> SAVE
+      </label>
+      <div class="success-msg"><?php print $successMsg; ?></div>
+    </div>
+    <hr style="clear:both">
+    <div class="edit-section">
+      <div class="change-password-button">
+        <a style="color: white; text-decoration: none; font-weight: bold;" href="/change-password">Change password</a>
+      </div>
+      <div class="profile-col first-sec">
+        <input class="profile-input" type="text" name="fullname" placeholder="Full Name" value="<?php echo $fullname; ?>" required>
+        <br>
+        <input class="profile-input" id="cellphone-input" maxLength="14" type="tel" name="cell_phone" placeholder="Cellphone Number" value="<?php echo WC()->customer->get_billing_phone() ?>">
+      </div>
+      <div class="profile-col first-sec">
+        <input class="profile-input" type="text" name="user_email" value="<?php the_author_meta('user_email', $userId); ?>" disabled>
+        <br>
+        <input class="profile-input" type="text" name="idnum" value="<?php the_author_meta('ID', $userId); ?>" disabled>
+      </div>
+    </div>
+    <h2 class="profile-headers">Payment Information</h2>
+    <hr>
+    <?php
+
+    defined('ABSPATH') || exit;
+
+    $saved_methods = wc_get_customer_saved_methods_list(get_current_user_id());
+    $has_methods   = (bool) $saved_methods;
+    $types         = wc_get_account_payment_methods_types();
+
+    do_action('woocommerce_before_account_payment_methods', $has_methods); ?>
+
+    <?php if ($has_methods) : ?>
+
+      <table class="woocommerce-MyAccount-paymentMethods shop_table shop_table_responsive account-payment-methods-table">
+        <thead>
+          <tr>
+            <?php foreach (wc_get_account_payment_methods_columns() as $column_id => $column_name) : ?>
+              <th class="woocommerce-PaymentMethod woocommerce-PaymentMethod--<?php echo esc_attr($column_id); ?> payment-method-<?php echo esc_attr($column_id); ?>"><span class="nobr"><?php echo esc_html($column_name); ?></span></th>
+            <?php endforeach; ?>
+          </tr>
+        </thead>
+        <?php foreach ($saved_methods as $type => $methods) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited 
+        ?>
+          <?php foreach ($methods as $method) : ?>
+            <tr class="payment-method<?php echo !empty($method['is_default']) ? ' default-payment-method' : ''; ?>">
+              <?php foreach (wc_get_account_payment_methods_columns() as $column_id => $column_name) : ?>
+                <td class="woocommerce-PaymentMethod woocommerce-PaymentMethod--<?php echo esc_attr($column_id); ?> payment-method-<?php echo esc_attr($column_id); ?>" data-title="<?php echo esc_attr($column_name); ?>">
+                  <?php
+                  if (has_action('woocommerce_account_payment_methods_column_' . $column_id)) {
+                    do_action('woocommerce_account_payment_methods_column_' . $column_id, $method);
+                  } elseif ('method' === $column_id) {
+                    if (!empty($method['method']['last4'])) {
+                      /* translators: 1: credit card type 2: last 4 digits */
+                      echo sprintf(esc_html__('%1$s ending in %2$s', 'woocommerce'), esc_html(wc_get_credit_card_type_label($method['method']['brand'])), esc_html($method['method']['last4']));
+                    } else {
+                      echo esc_html(wc_get_credit_card_type_label($method['method']['brand']));
+                    }
+                  } elseif ('expires' === $column_id) {
+                    echo esc_html($method['expires']);
+                  } elseif ('actions' === $column_id) {
+                    foreach ($method['actions'] as $key => $action) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+                      echo '<a href="' . esc_url($action['url']) . '" class="button ' . sanitize_html_class($key) . '">' . esc_html($action['name']) . '</a>&nbsp;';
+                    }
+                  }
+                  ?>
+                </td>
+              <?php endforeach; ?>
+            </tr>
+          <?php endforeach; ?>
+        <?php endforeach; ?>
+      </table>
+
+    <?php else : ?>
+
+      <p class="payment-information-message"><?php esc_html_e('No saved methods found.', 'woocommerce'); ?></p>
+
+    <?php endif; ?>
+
+    <?php do_action('woocommerce_after_account_payment_methods', $has_methods); ?>
+
+    <?php if (WC()->payment_gateways->get_available_payment_gateways()) : ?>
+    <?php endif;
+    ?>
+    <h2 class="profile-headers">Billing Information</h2>
+    <hr>
+    <div class="edit-section">
+      <div class="profile-col">
+        <label>Billing Address*</label>
+        <br>
+        <input class="profile-input" placeholder="e.g. Unit 1, 123 Main Street" type="text" id="billing_address" name="billing_address" value="<?php echo WC()->customer->get_billing_address_1() ?>">
+        <br>
+        <label>City/Town*</label>
+        <br>
+        <input class="profile-input" type="text" id="billing_city" name="billing_city" value="<?php echo WC()->customer->get_billing_city() ?>" required>
+        <br>
+        <label>Zip Code*</label>
+        <br>
+        <input class="profile-input" type="text" id="billing_postalcode" name="billing_postalcode" value="<?php echo WC()->customer->get_billing_postcode() ?>" required>
+      </div>
+      <div class="profile-col">
+        <label>Country*</label>
+        <br>
+        <select id="billing_country" class="country" name="billing_country" required></select>
+        <br>
+        <label>State/Territory*</label>
+        <br>
+        <select id="billing_state" class="state" name="billing_state" required>
+        </select>
+        <br>
+        <label></label>
+        <br>
+        <div id="ship-bill">Shipping Address Same as Billing Address</div>
+        <input type="checkbox" autocomplete="off" class="checkbox" id="shipping-address-same-as-billing" />
+        <label id="checkbox-lbl" for="shipping-address-same-as-billing"></label>
+        <br>
+      </div>
+    </div>
+    <h2 class="profile-headers">Shipping Information</h2>
+    <hr>
+    <div class="edit-section">
+      <div class="profile-col">
+        <label>Shipping Address*</label>
+        <br>
+        <input class="profile-input" placeholder="e.g. Unit 1, 123 Main Street" id="shipping_address" type="text" name="shipping_address" value="<?php echo WC()->customer->get_shipping_address_1() ?>" required>
+        <br>
+        <label>City/Town*</label>
+        <br>
+        <input class="profile-input" id="shipping_city" type="text" name="shipping_city" value="<?php echo WC()->customer->get_shipping_city() ?>" required>
+        <br>
+        <label>Zip Code*</label>
+        <br>
+        <input class="profile-input" id="shipping_postalcode" type="text" name="shipping_postalcode" value="<?php echo WC()->customer->get_shipping_postcode() ?>" required>
+      </div>
+      <div class="profile-col">
+        <label>Country*</label>
+        <br>
+        <select id="shipping_country" class="country" name="shipping_country" required>
+        </select>
+        <br>
+        <label>State/Territory*</label>
+        <br>
+        <select id="shipping_state" class="state" name="shipping_state" required>
+        </select>
+        <br>
+      </div>
+    </div>
+    <h2 class="profile-headers">Profile Photo</h2>
+    <hr>
+    <div class="profile-picture-container">
+      <?php echo do_shortcode('[basic-user-avatars]'); ?>
+      <div class="supported-file-types-msg"> Valid Files: JPG, JPEG, JPE GIF, PNG </div>
+      <label class="secondary-submit-lbl">
+        <input class="save-profile-button" type="submit" id="secondary-save-exit" name="form-submit"> SAVE
+      </label>
+    </div>
+  </form>
+<?php
+
+}
+add_shortcode('profile-info', 'profile_info_shortcode');
+
+function send_formData_to_rulesAPI($formData)
+{
+  if (isset($_COOKIE['ad_b2c_auth_id_token'])) {
+    $results = wp_remote_retrieve_body(wp_remote_post(ENDPOINT, array(
+      'method'  => 'POST',
+      'headers' => array(
+        'Content-Type'  => 'application/json; charset=utf-8',
+        'Authorization' => 'Bearer ' . $_COOKIE[<TOKEN>]
+      ),
+      'body'      => json_encode(array(
+        'formData'  => $formData
+      ))
+    )));
+    return $results;
+  }
+}
+
+function update_user_address_info_in_woo_commerce()
+{
+
+  $cell_phone = strval(htmlspecialchars(sanitize_text_field($_POST['cell_phone'])));
+
+  $billing_address_1 = htmlspecialchars(sanitize_text_field($_POST['billing_address']));
+  $billing_city = htmlspecialchars(sanitize_text_field($_POST['billing_city']));
+  $billing_postcode = htmlspecialchars(sanitize_text_field($_POST['billing_postalcode']));
+  $billing_country = ($_POST['billing_country']);
+  $billing_state = ($_POST['billing_state']);
+
+  $shipping_address_1 = htmlspecialchars(sanitize_text_field($_POST['shipping_address']));
+  $shipping_city = htmlspecialchars(sanitize_text_field($_POST['shipping_city']));
+  $shipping_postcode = htmlspecialchars(sanitize_text_field($_POST['shipping_postalcode']));
+  $shipping_country = ($_POST['shipping_country']);
+  $shipping_state = ($_POST['shipping_state']);
+
+
+  WC()->customer->set_billing_phone($cell_phone);
+
+  WC()->customer->set_billing_address_1($billing_address_1);
+  WC()->customer->set_billing_city($billing_city);
+  WC()->customer->set_billing_postcode($billing_postcode);
+  WC()->customer->set_billing_country($billing_country);
+  WC()->customer->set_billing_state($billing_state);
+
+  WC()->customer->set_shipping_address_1($shipping_address_1);
+  WC()->customer->set_shipping_city($shipping_city);
+  WC()->customer->set_shipping_postcode($shipping_postcode);
+  WC()->customer->set_shipping_country($shipping_country);
+  WC()->customer->set_shipping_state($shipping_state);
+}
+
+
+
+
+
+?>
